@@ -47,6 +47,8 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            merges += "META-INF/LICENSE.md"
+            merges += "META-INF/LICENSE-notice.md"
         }
     }
 }
@@ -67,6 +69,12 @@ dependencies {
     implementation(libs.hiltAndroid)
     implementation(libs.navigation)
     implementation(libs.composeHiltNavigation)
+    implementation(libs.mockk)
+    implementation(libs.kotest)
+    implementation(libs.junitJupiter)
+    implementation(libs.junitJupiterParams)
+    implementation(libs.coroutinesTest)
+    implementation(libs.turbine)
     ksp(libs.hiltCompiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

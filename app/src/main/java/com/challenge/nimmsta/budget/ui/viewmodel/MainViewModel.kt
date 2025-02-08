@@ -98,9 +98,7 @@ class MainViewModel @Inject constructor(
                 )
             )
         }
-
         closeDialog()
-
     }
 
     private fun deleteItem(item: BudgetData) {
@@ -110,30 +108,23 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun updatePieChart() {
-        val totalIncome = state.value.items.filter { it.type == BudgetType.INCOME }
-            .sumOf { it.amount.toBigDecimal() }
-
-        val totalExpense = state.value.items.filter { it.type == BudgetType.EXPENSE }
-            .sumOf { it.amount.toBigDecimal() }
-
-        _state.update {
-            it.copy(
-                totalExpense = totalExpense.toFloat(),
-                totalIncome = totalIncome.toFloat()
-            )
-        }
-    }
-
     private fun getMainData() {
         viewModelScope.launch {
             repository.getAllBudget().collect { result ->
+
+                val totalIncome = result.filter { it.type == BudgetType.INCOME }
+                    .sumOf { it.amount.toBigDecimal() }
+
+                val totalExpense = result.filter { it.type == BudgetType.EXPENSE }
+                    .sumOf { it.amount.toBigDecimal() }
+
                 _state.update {
                     it.copy(
-                        items = result
+                        items = result,
+                        totalExpense = totalExpense.toFloat(),
+                        totalIncome = totalIncome.toFloat()
                     )
                 }
-                updatePieChart()
             }
         }
     }
